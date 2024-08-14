@@ -43,7 +43,7 @@ function WeatherApp() {
   };
 
   useEffect(() => {
-    return () => clearInterval(intervalRef.current);  // پاک‌سازی تایمر هنگام unmount
+    return () => clearInterval(intervalRef.current);  
   }, []);
 
   return (
