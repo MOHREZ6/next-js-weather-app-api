@@ -3,11 +3,15 @@ import { useState, useEffect, useRef } from 'react';
 function WeatherApp() {
   const [city, setCity] = useState('');
   const [weatherData, setWeatherData] = useState(null);
+  const [forecastData, setForecastData] = useState([]);
   const [time, setTime] = useState('');
   const intervalRef = useRef(null);  
+ 
 
+ 
   const apiKey = "97cdbdcd15f7bd360eaf5695cc26bcf9";
   const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+  const forecastApiUrl = "https://api.openweathermap.org/data/2.5/forecast?units=metric&q=";
 
   const fetchWeather = async () => {
     if (intervalRef.current) {
@@ -18,10 +22,27 @@ function WeatherApp() {
       const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
       const data = await response.json();
       setWeatherData(data);
+      console.log(data);
+
+
+      const forecastResponse = await fetch(forecastApiUrl + city + `&appid=${apiKey}`);
+      const forecastData = await forecastResponse.json();
+      
+      // Extracting 3 days of forecast data
+      const dailyForecasts = forecastData.list.filter(item =>
+        item.dt_txt.includes("12:00:00")|| item.dt_txt.includes("09:00:00") || item.dt_txt.includes("15:00:00")
+      ).slice(0,4);
+      setForecastData(dailyForecasts);
+
+
+
+
+
 
       const { lat, lon } = data.coord;
       const TimeApiKey = "RLSGXSRRNDO3";
       const TimeZonesUrl = "https://api.timezonedb.com/v2.1/get-time-zone?format=json";
+      
       const timeZoneResponse = await fetch(
         TimeZonesUrl +
         `&key=${TimeApiKey}` +
@@ -95,9 +116,36 @@ function WeatherApp() {
             </div>
           </div>
         )}
+        {forecastData.length > 0 && (
+          <div>
+            <h2 className="text-xl font-bold mt-6">3-Day Forecast</h2>
+            <div className="grid grid-cols-3 gap-4">
+              {forecastData.map((forecast, index) => (
+                <div key={index} className="text-center p-2 border rounded-lg">
+                  <p>{new Date(forecast.dt_txt).toLocaleString()}</p> 
+                  <p>{Math.round(forecast.main.temp)}°C</p>
+                  <p>{forecast.weather[0].description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 export default WeatherApp;
+
+
+
+
+
+
+
+
+  
+      
+ 
+ 
+ 
