@@ -1,7 +1,5 @@
-import WeatherApp from './api/WeatherApi';
+import WeatherApp from "./api/WeatherApi";
 
 export default function Home() {
-  return (
-    <WeatherApp />
-  );
+  return <WeatherApp />;
 }
