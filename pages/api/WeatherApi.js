@@ -1,4 +1,5 @@
 import Background from "/components/BackgroundImage";
+import Clock from "./Clock";
 import { useState, useEffect, useRef } from "react";
 
 function WeatherApp() {
@@ -15,10 +16,6 @@ function WeatherApp() {
     "https://api.openweathermap.org/data/2.5/forecast?units=metric&q=";
 
   const fetchWeather = async () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-
     try {
       const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
       const data = await response.json();
@@ -37,41 +34,17 @@ function WeatherApp() {
             item.dt_txt.includes("09:00:00") ||
             item.dt_txt.includes("15:00:00")
         )
-        .slice(0, 6);
+        .slice(0, 3);
       setForecastData(dailyForecasts);
-
-      const { lat, lon } = data.coord;
-      const TimeApiKey = "RLSGXSRRNDO3";
-      const TimeZonesUrl =
-        "https://api.timezonedb.com/v2.1/get-time-zone?format=json";
-
-      const timeZoneResponse = await fetch(
-        TimeZonesUrl +
-          `&key=${TimeApiKey}` +
-          `&by=position&lat=${lat}` +
-          `&lng=${lon}`
-      );
-      const timeZoneData = await timeZoneResponse.json();
-      const timeZone = new Date(timeZoneData.formatted);
-      setTime(timeZone.toLocaleTimeString());
-
-      intervalRef.current = setInterval(() => {
-        timeZone.setSeconds(timeZone.getSeconds() + 1);
-        setTime(timeZone.toLocaleTimeString());
-      }, 1000);
     } catch (error) {
       console.error("Error fetching the weather data:", error);
     }
   };
 
-  useEffect(() => {
-    return () => clearInterval(intervalRef.current);
-  }, []);
-
   return (
     <div className="relative bg-gray-100 flex items-center justify-center h-screen">
       <Background />
-      <div className="bg-white rounded-lg shadow-lg p-6 w-96 z-10">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-96 z-10 ">
         <p className="text-center text-3xl pb-3.5">Weather App</p>
         <div className="flex items-center border-b border-b-2 border-teal-500 py-2">
           <input
@@ -95,8 +68,9 @@ function WeatherApp() {
           </button>
         </div>
         {weatherData && (
-          <div className="text-center mb-4">
-            <p className="text-gray-600">{time}</p>
+          <div className="text-center mb-4 ">
+            {/* <p className="text-gray-600">{time}</p> */}
+            <Clock lat={weatherData.coord.lat} lon={weatherData.coord.lon} />
             <div className="flex items-center justify-center text-gray-600">
               <div className="text-6xl">
                 <i className="fas fa-cloud"></i>
@@ -125,7 +99,7 @@ function WeatherApp() {
         )}
         {forecastData.length > 0 && (
           <div>
-            <h2 className="text-xl font-bold mt-6">3-Day Forecast</h2>
+            {/* <h2 className="text-xl font-bold mt-6">3-Day Forecast</h2> */}
             <div className="grid grid-cols-3 gap-4">
               {forecastData.map((forecast, index) => (
                 <div key={index} className="text-center p-2 border rounded-lg">
