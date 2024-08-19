@@ -42,16 +42,17 @@ function WeatherApp() {
   };
 
   return (
-    <div className="relative bg-gray-100 flex items-center justify-center h-screen">
+    <div className="relative bg-gray-100 flex flex-col   items-center justify-center h-screen  ">
       <Background />
-      <div className="bg-white rounded-lg shadow-lg p-6 w-96 z-10 ">
+
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2  rounded-lg shadow-lg p-6 w-96 z-10  bg-white	 bg-opacity-35 mt-20">
         <p className="text-center text-3xl pb-3.5">Weather App</p>
         <div className="flex items-center border-b border-b-2 border-teal-500 py-2">
           <input
             type="text"
             placeholder="Enter your city"
             spellCheck="false"
-            className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+            className="placeholder-black appearance-none bg-transparent border-none w-full   mr-3 py-1 px-2 leading-tight focus:outline-none"
             value={city}
             onChange={(e) => setCity(e.target.value)}
             onKeyPress={(e) => {
@@ -67,29 +68,40 @@ function WeatherApp() {
             Search
           </button>
         </div>
+      </div>
+      <div
+        className={`rounded-lg p-6 w-96 z-10 mt-36 ${
+          weatherData ? "bg-white bg-opacity-35" : ""
+        }`}
+      >
         {weatherData && (
-          <div className="text-center mb-4 ">
-            {/* <p className="text-gray-600">{time}</p> */}
+          <div className="text-center mb-4   	">
             <Clock lat={weatherData.coord.lat} lon={weatherData.coord.lon} />
             <div className="flex items-center justify-center text-gray-600">
               <div className="text-6xl">
                 <i className="fas fa-cloud"></i>
               </div>
-              <div className="ml-4 text-6xl">
-                {Math.round(weatherData.main.temp)}°C
+              <div className="ml-4 text-center	">
+                <p className="text-black 	 text-[24px]	 font-semibold	 mr-7			">
+                  {Math.round(weatherData.main.temp)}°C
+                </p>
               </div>
             </div>
-            <p className="text-xl mt-2">{weatherData.weather[0].description}</p>
+            <p className=" text-[20px] mt-2  mr-1	">
+              {weatherData.weather[0].description}
+            </p>
             <div className="flex justify-between mt-4">
               <div>
-                <p className="border-b border-b-2 border-teal-500">Humidity</p>
+                <p className="border-b border-b-2 border-teal-500 pb-1	">
+                  Humidity
+                </p>
                 <p>{weatherData.main.humidity}%</p>
               </div>
               <div>
-                <p className="font-bold">{weatherData.name}</p>
+                <p className="text-[20px] ml-2	">{weatherData.name}</p>
               </div>
               <div>
-                <p className="border-b border-b-2 border-teal-500">
+                <p className="border-b border-b-2 border-teal-500 pb-1	">
                   Wind speed
                 </p>
                 <p>{weatherData.wind.speed} km/h</p>
@@ -98,14 +110,24 @@ function WeatherApp() {
           </div>
         )}
         {forecastData.length > 0 && (
-          <div>
-            {/* <h2 className="text-xl font-bold mt-6">3-Day Forecast</h2> */}
+          <div className="text-center	 border-t-2 border-teal-500	mt-2  ">
             <div className="grid grid-cols-3 gap-4">
               {forecastData.map((forecast, index) => (
-                <div key={index} className="text-center p-2 border rounded-lg">
-                  <p>{new Date(forecast.dt_txt).toLocaleString()}</p>
-                  <p>{Math.round(forecast.main.temp)}°C</p>
+                <div key={index} className="text-center  pt-1   ">
+                  <p className="text-[20px]">
+                    {Math.round(forecast.main.temp)}°C
+                  </p>
                   <p>{forecast.weather[0].description}</p>
+                  <p>
+                    {new Date(forecast.dt_txt).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                    })}{" "}
+                    {new Date(forecast.dt_txt).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
                 </div>
               ))}
             </div>

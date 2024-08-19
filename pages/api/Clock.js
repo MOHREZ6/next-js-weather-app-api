@@ -32,7 +32,7 @@ function Clock({ lat, lon }) {
     return () => clearInterval(intervalRef.current);
   }, [lat, lon]);
 
-  return <p className="text-gray-600 p-3 font-bold	text-2xl">{time}</p>;
+  return <p className="pb-6 font-bold	text-xl	">{time}</p>;
 }
 
 export default Clock;
