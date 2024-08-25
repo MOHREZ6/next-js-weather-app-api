@@ -92,7 +92,7 @@ function WeatherApp() {
             </p>
             <div className="flex justify-between mt-4">
               <div>
-                <p className="border-b border-b-2 border-teal-500 pb-7	">
+                <p className="border-b border-b-2 border-teal-500 pb-1	">
                   Humidity
                 </p>
                 <p>{weatherData.main.humidity}%</p>
