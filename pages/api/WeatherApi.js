@@ -1,4 +1,4 @@
-import Background from "/components/BackgroundImage";
+import CityBackground from "./CityBackground.js";
 import Clock from "./Clock";
 import { useState, useEffect, useRef } from "react";
 
@@ -20,7 +20,7 @@ function WeatherApp() {
       const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
       const data = await response.json();
       setWeatherData(data);
-      console.log(data);
+      // console.log(data);
 
       const forecastResponse = await fetch(
         forecastApiUrl + city + `&appid=${apiKey}`
@@ -43,9 +43,9 @@ function WeatherApp() {
 
   return (
     <div className="relative bg-gray-100 flex flex-col   items-center justify-center h-screen  ">
-      <Background />
+      <CityBackground city={city} />
 
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2  rounded-lg shadow-lg p-6 w-96 z-10  bg-white	 bg-opacity-35 mt-20">
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2  rounded-lg shadow-lg p-6 w-96 z-10  bg-white	 bg-opacity-80 mt-20">
         <p className="text-center text-3xl pb-3.5">Weather App</p>
         <div className="flex items-center border-b border-b-2 border-teal-500 py-2">
           <input
@@ -70,8 +70,8 @@ function WeatherApp() {
         </div>
       </div>
       <div
-        className={`rounded-lg p-6 w-96 z-10 mt-36 ${
-          weatherData ? "bg-white bg-opacity-35" : ""
+        className={`rounded-lg p-6 w-96 z-10 mt-40 ${
+          weatherData ? "bg-white bg-opacity-80" : ""
         }`}
       >
         {weatherData && (
